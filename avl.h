@@ -23,7 +23,7 @@ public:
 	/*******************************************************************************/
 	Dic(const Dic& otro);
 	/*******************************************************************************/
-	void Add(T& elem){
+	void Add(T elem){
 		if(raiz == NULL) raiz = new Nodo(NULL, elem);
 		else{
 			Nodo* padre = raiz;
@@ -61,7 +61,7 @@ public:
 		}
 	}
 	/*******************************************************************************/
-	void Delete(T& elem){
+	void Delete(T elem){
 		Nodo* actual = raiz;
 		while(actual->elem != elem){
 			if(elem > actual->elem) actual = actual->der;
@@ -108,9 +108,9 @@ public:
 
 		delete(actual);
 
-		n = n->padre;
+		//n = n->padre;
 		while(n!=NULL){
-			n->h = max( altura(n->izq), altura(n->der ));
+			n->h = max( altura(n->izq), altura(n->der ))+1;
 			if(fb(n)== -2) rebalancearIzq(n);
 			if(fb(n)== 2 ) rebalancearDer(n);
 			n = n->padre;
@@ -127,17 +127,26 @@ public:
 		typename Dic<T>::IteradorBFS it = this->CrearIt();
 		int niveles = 0;
 		int cont=0 ;
+		int i = 0;
 		while(it.haySiguiente()){
+
 			if(it.siguiente() != NULL) cout << it.siguiente()->elem << " ";
-			else cout << "NULL ";
+			else {
+				cout << "N ";
+				i++;
+			}
 			cont ++;
 			if(cont == elevar(2,niveles)) {
 				cout << "\n";
+				if(i  == cont ) break;
 				cont = 0;
 				niveles++;
+			
+				i = 0;
 			} 
 			it.avanzar();
 		}
+		cout << "\n\n";
 	}
 
 
@@ -179,6 +188,10 @@ private:
 			if(prim != NULL){
 				camino.agregar(prim->izq);
 				camino.agregar(prim->der);
+			}
+			else{
+				camino.agregar(NULL);
+				camino.agregar(NULL);
 			}
 			camino.avanzar();
 		}
@@ -230,8 +243,8 @@ private:
 	}
 
 	void eliminarHoja(Nodo* actual){
-		if(esIzq(actual)) actual->padre->izq == NULL;
-		else actual->padre->der == NULL;
+		if(esIzq(actual)) actual->padre->izq = NULL;
+		else actual->padre->der = NULL;
 	}
 
 	void eliminarConUnHijo(Nodo* actual){
@@ -305,7 +318,7 @@ private:
 
 			if(n == raiz) raiz = n2;
 
-			n->h -= 2; 
+			n->h = max(altura(n->izq), altura(n->der))+1; 
 
 
 		}
@@ -323,8 +336,8 @@ private:
 			n2->padre = n3;
 			n3->izq = n2;
 
-			n2->h -= 1;
-			n3->h += 1;
+			n2->h = max(altura(n2->izq), altura(n2->der))+1;
+			n3->h = max(altura(n3->izq), altura(n3->der))+1;
 
 			//rotacion 2
 
@@ -342,7 +355,7 @@ private:
 			n->padre = n2;
 			n2->der = n;
 
-			n->h-=2;
+			n->h = max(altura(n->izq), altura(n->der))+1;
 			if(n == raiz) raiz= n2;
 
 		}
@@ -366,7 +379,7 @@ private:
 
 			if(n == raiz) raiz = n2;
 
-			n->h -= 2; 
+			n->h = max(altura(n->izq), altura(n->der))+1; 
 
 
 		}
@@ -384,8 +397,8 @@ private:
 			n2->padre = n3;
 			n3->der = n2;
 
-			n2->h -= 1;
-			n3->h += 1;
+			n2->h = max(altura(n2->izq), altura(n2->der))+1;
+			n3->h = max(altura(n3->izq), altura(n3->der))+1;
 
 			//rotacion 2
 
@@ -403,7 +416,7 @@ private:
 			n->padre = n2;
 			n2->izq = n;
 
-			n->h-=2;
+			n->h = max(altura(n->izq), altura(n->der))+1;
 			if(n == raiz) raiz= n2;
 
 

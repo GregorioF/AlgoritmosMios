@@ -48,14 +48,20 @@ int main(){
 
 
 	b.Delete(b7);
+	//b.Delete(b8);
 	b.Delete(b5);
-	
-	cout << "\n";
-
-	cout << "\n";
-
 	b.mostrar();
-	cout << "\n";
+	b.Delete(2);	
+	b.mostrar();
+	b.Delete(5);
+	b.mostrar();
+	b.Delete(10);
+	b.mostrar();
+//	cout << "\n";
+
+//	cout << "\n";
+
+//	cout << "\n";
 
 
     return 0;
